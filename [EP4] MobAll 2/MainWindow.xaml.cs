@@ -517,7 +517,7 @@ namespace _EP4__MobAll_2
         }
         private void ShowWindow(string Content)
         {
-            var win = new WindowInfo(WindowInfo.TypeWindow.InfoContent, this, "Предмет не существует");
+            var win = new WindowInfo(WindowInfo.TypeWindow.InfoContent, this, Content);
             win.Show();
         }
         #region SQL
