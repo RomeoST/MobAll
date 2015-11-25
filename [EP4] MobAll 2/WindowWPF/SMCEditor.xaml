@@ -1,0 +1,22 @@
+﻿<Controls:MetroWindow x:Class="_EP4__MobAll_2.WindowWPF.SMCEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:_EP4__MobAll_2.WindowWPF"
+        mc:Ignorable="d"
+        Title="SMC Editor | RomeoST" Height="323.333" Width="455.167" GlowBrush="{DynamicResource AccentColorBrush}" WindowStartupLocation="CenterScreen" Background="#FF2E2E2E">
+    <Grid>
+        <Button x:Name="B_Cancel" Content="Сlose" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="111" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_Cancel_Click"/>
+        <Button x:Name="B_Save" Content="Save" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="111" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_Save_Click"/>
+        <RichTextBox x:Name="richTextBox" Background="#FF2E2E2E" Foreground="White" CaretBrush="White" Margin="0,0,0,40" BorderBrush="White">
+            <FlowDocument>
+                <Paragraph>
+                    <Run x:Name="R_Box" Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</Controls:MetroWindow>

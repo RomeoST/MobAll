@@ -1,0 +1,441 @@
+﻿<Controls:MetroWindow x:Class="_EP4__MobAll_2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:_EP4__MobAll_2"
+        xmlns:converters="clr-namespace:_EP4__MobAll_2.Converters"
+        mc:Ignorable="d"
+        Title="Studio MobAll | RomeoST" Height="597" Width="941.5" GlowBrush="{DynamicResource AccentColorBrush}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <converters:ItemToIconConverter x:Key="IconConv"></converters:ItemToIconConverter>
+    </Window.Resources>
+    <!--Настройки сверху-->
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <ToggleButton Content="Open" IsChecked="{Binding ElementName=FLYOUT_OpenFile, Path=IsOpen}" Cursor="Hand"/>
+            <ToggleButton Content="Save" IsChecked="{Binding ElementName=FLYOUT_SaveFile, Path=IsOpen}" Cursor="Hand"/>
+            <ToggleButton Content="MySQL" IsChecked="{Binding ElementName=FLYOUT_MySQLConf, Path=IsOpen}" Cursor="Hand"/>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Grid>
+        <ListView x:Name="L_Box" HorizontalAlignment="Left" Margin="10,10,0,37" Width="292" SelectionChanged="L_Box_SelectionChanged">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="MI_Add" Header="Добавить Npc" Click="MI_Add_Click" />
+                    <MenuItem x:Name="MI_Remove" Header="Удалить Npc" Click="MI_Remove_Click"/>
+                    <MenuItem x:Name="MI_SQL_Ins" Header="[SQL] Добавить Npc" Click="MI_SQL_Ins_Click" Foreground="#FFFF6800"/>
+                    <MenuItem x:Name="MI_SQL_Update" Header="[SQL] Обновить Npc" Click="MI_SQL_Update_Click" Foreground="#FFFF6800"/>
+                    <MenuItem x:Name="MI_SQL_FromTo" Header="[SQL] Действия ОтДо" Click="MI_SQL_FromTo_Click" Foreground="#FFFF6800"/>
+                    <MenuItem x:Name="MI_CopyBuff" Header="Скопировать в буффер" IsEnabled="False"/>
+                    <MenuItem x:Name="MI_PasteBuff" Header="Вставить из буффера" IsEnabled="False"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding NpcID}"  Width="60"/>
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Level" Width="75" DisplayMemberBinding="{Binding Level}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StatusBar Height="32" VerticalAlignment="Bottom" Background="#FF2E2E2E" Grid.ColumnSpan="2">
+            <MenuItem Background="{x:Null}" Header="Dev RomeoST"/>
+        </StatusBar>
+        <Expander x:Name="expander" Header="Search" Margin="307,0,10,0" VerticalAlignment="Top" Height="88" ExpandDirection="Right" Background="#FF2E2E2E" BorderBrush="#FF2E2E2E" Panel.ZIndex="1">
+            <Grid Background="#FFE5E5E5">
+                <TextBox x:Name="T_Search" HorizontalAlignment="Left" Height="23" Margin="67,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="156" TextChanged="T_Search_TextChanged"/>
+                <Label x:Name="label3" Content="Search -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="label4" Content="Found -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" ToolTip="Найдено NPC"/>
+                <Button x:Name="B_Find" Content="Find" HorizontalAlignment="Left" Margin="449,24,0,0" VerticalAlignment="Top" Width="94" Background="#FF2E2E2E" BorderBrush="White" Foreground="White" Click="B_Find_Click"/>
+                <Label x:Name="l_find_num" Content="" HorizontalAlignment="Left" Margin="56,41,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="C_FindFlag" HorizontalAlignment="Left" Margin="278,10,0,0" VerticalAlignment="Top" Width="166" Text="Не выбрано"/>
+                <Label x:Name="label3_Copy" Content="Flags -" HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="C_FindFlag_Copy" HorizontalAlignment="Left" Margin="278,41,0,0" VerticalAlignment="Top" Width="166" Text="Не выбрано" IsEnabled="False"/>
+                <Label x:Name="label3_Copy1" Content="Map -" HorizontalAlignment="Left" Margin="228,41,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </Expander>
+        <TabControl DataContext="{Binding ElementName=L_Box, Path=SelectedItem}" x:Name="tabControl" Height="519" Margin="367,10,10,0" VerticalAlignment="Top">
+            <TabItem Header="Basic">
+                <Grid x:Name="grid_A" Background="White">
+                    <Button x:Name="B_SaveThis" Content="Save  NPC" HorizontalAlignment="Right" Margin="0,0,17,-38" VerticalAlignment="Bottom" Width="111" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Click="B_SaveThis_Click" Visibility="Hidden"/>
+                    <Button x:Name="B_Cancel" Content="Cancel" Margin="0,0,133,-38" VerticalAlignment="Bottom" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Click="B_Cancel_Click" HorizontalAlignment="Right" Width="111" Visibility="Hidden"/>
+                    <GroupBox x:Name="groupBox2" Header="Speed/Radius" HorizontalAlignment="Left" Margin="-9,165,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="172" Width="279">
+                        <Grid>
+                            <TextBox x:Name="T_SpeedWalk" Text="{Binding WalkSpeed, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="128,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SpeedAttack" Text="{Binding AttackSpeed, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="128,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SpeedRun" Text="{Binding RunSpeed, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="128,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_RadiusAttack" Text="{Binding AttackArea, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="128,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy1" Content="Скорость ходьбы -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy2" Content="Скорость атаки -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy3" Content="Скорость бега -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy4" Content="Радиус атаки -" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox3" Header="Basic" HorizontalAlignment="Left" Margin="-9,0,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Width="552" Height="174">
+                        <Grid>
+                            <TextBox x:Name="T_ID" Text="{Binding NpcID, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="125,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_Name" Text="{Binding Name, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="125,41,0,0" VerticalAlignment="Top" Width="162" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF"  TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_HP" Text="{Binding HP, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="353,10,0,0" VerticalAlignment="Top" Width="177" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_MP" Text="{Binding MP, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="353,41,0,0" VerticalAlignment="Top" Width="177" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_Flag1" Text="{Binding Flag, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="353,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174" Foreground="Black" CaretBrush="Black" BorderBrush="#D5FF8000" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange" MouseDoubleClick="T_Flag1_MouseDoubleClick"/>
+                            <TextBox x:Name="T_Flag2" Text="{Binding Flag1, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="353,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="174" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_Level" Text="{Binding Level, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="125,103,0,0" VerticalAlignment="Top" Width="162" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF"  TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy27" Content="Уровень -" HorizontalAlignment="Left" Margin="10,103,0,-5" VerticalAlignment="Top"/>
+                            <Label x:Name="label1" Content="ID -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy" Content="Название -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy11" Content="HP -" HorizontalAlignment="Left" Margin="292,10,0,0" VerticalAlignment="Top" Foreground="Red" FontWeight="Bold"/>
+                            <Label x:Name="label1_Copy12" Content="MP -" HorizontalAlignment="Left" Margin="292,41,0,0" VerticalAlignment="Top" Foreground="#FF1700FF" FontWeight="Bold"/>
+                            <Label x:Name="label1_Copy13" Content="Flag 1 -" HorizontalAlignment="Left" Margin="292,72,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy14" Content="Flag 2 -" HorizontalAlignment="Left" Margin="292,103,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy24" Content="Тип атаки -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                            <ComboBox SelectedIndex="{Binding AttackType, UpdateSourceTrigger=Explicit}" x:Name="C_TypeAttack" HorizontalAlignment="Left" Margin="125,72,0,0" VerticalAlignment="Top" Width="162" SelectedItem="ValueChanget">
+                                <ComboBoxItem Content="1 - Ближний"/>
+                                <ComboBoxItem Content="2 - Дальний"/>
+                                <ComboBoxItem Content="3 - Магия"/>
+                            </ComboBox>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox2_Copy" Header="Skill/Other" HorizontalAlignment="Left" Margin="264,165,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="268" Width="279">
+                        <Grid>
+                            <TextBox x:Name="T_Size" Text="{Binding Size, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_Scale" Text="{Binding Scale, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SkillID1" Text="{Binding SkillId1, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SkillID2" Text="{Binding SkillId2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SkillLevel1" Text="{Binding SkillLevel1, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_SkillLevel2" Text="{Binding SkillLevel2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy15" Content="Размер -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy16" Content="Шкала Scale -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy19" Content="SkillID1 -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy20" Content="SkillID2 -" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy21" Content="SkillLevel1 -" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy22" Content="SkillLevel2 -" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="T_SkillMaster" Text="{Binding SkillMaster, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="107,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="109" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy5" Content="Skill Master -" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox4" Header="RVR/SMC" HorizontalAlignment="Left" Margin="-9,342,0,0" VerticalAlignment="Top" Width="279" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="132">
+                        <Grid>
+                            <TextBox x:Name="T_RVRValue" Text="{Binding RvRValue, UpdateSourceTrigger=Explicit}"  HorizontalAlignment="Left" Height="23" Margin="85,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy25" Content="Тип RVR -" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy26" Content="RVR знч. -" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                            <ComboBox SelectedIndex="{Binding RvRGrade, UpdateSourceTrigger=Explicit}" x:Name="C_RVR"  HorizontalAlignment="Left" Margin="85,4,0,0" VerticalAlignment="Top" Width="172" SelectedItem="ValueChanget" SelectionChanged="SelectionChange">
+                                <ComboBoxItem Content="1 - Вне фракции"/>
+                                <ComboBoxItem Content="2 - Свет"/>
+                                <ComboBoxItem Content="2 - Тьма"/>
+                            </ComboBox>
+                            <TextBox x:Name="T_SMC" Text="{Binding SMC, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="85,66,-92,0" VerticalAlignment="Top" Width="240" Foreground="#FF1700FF" CaretBrush="Black" BorderBrush="#D5FF8000" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange" BorderThickness="1" MouseDoubleClick="T_SMC_MouseDoubleClick"/>
+                            <Label x:Name="label1_Copy23" Content="SMC -" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="44"/>
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Animation">
+                <Grid Background="White">
+                    <TextBox x:Name="T_Idle" Text="{Binding Idle, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange" MouseDoubleClick="PickAnimation" Tag="Idle"/>
+                    <TextBox x:Name="T_Walk" Text="{Binding Walk, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Walk"/>
+                    <TextBox x:Name="T_Damage" Text="{Binding Damage, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Damage"/>
+                    <TextBox x:Name="T_Attack" Text="{Binding Attack, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Attack"/>
+                    <TextBox x:Name="T_Die" Text="{Binding Die, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Die"/>
+                    <TextBox x:Name="T_Run" Text="{Binding Run, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Run"/>
+                    <TextBox x:Name="T_Idle2" Text="{Binding Idle2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Idle2"/>
+                    <TextBox x:Name="T_Attack2" Text="{Binding Attack2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="103,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="Black" CaretBrush="Black" BorderBrush="#FFE67664" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"  MouseDoubleClick="PickAnimation" Tag="Attack2"/>
+                    <TextBox x:Name="T_AnimAll" HorizontalAlignment="Left" Height="23" Margin="103,284,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Foreground="#FF1700FF" CaretBrush="Blue" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF"/>
+                    <Label x:Name="label2" Content="Idle -" HorizontalAlignment="Left" Margin="11,10,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy" Content="Walk -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy1" Content="Damage -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy2" Content="Attack -" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy3" Content="Die -" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy4" Content="Run -" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy5" Content="Idle2 -" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy6" Content="Attack2 -" HorizontalAlignment="Left" Margin="10,227,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label2_Copy7" Content="Всем сразу -" HorizontalAlignment="Left" Margin="10,284,0,0" VerticalAlignment="Top"/>
+                    <Separator HorizontalAlignment="Left" Height="15" Margin="10,318,0,0" VerticalAlignment="Top" Width="383" Background="#FF5F5F5F"/>
+                    <Label x:Name="label2_Copy11" Content="* Примечение: Для " HorizontalAlignment="Left" Margin="341,10,0,0" VerticalAlignment="Top" Height="26" Cursor="Help"/>
+                    <Label x:Name="label2_Copy12" Content="выбора анимации нужно" HorizontalAlignment="Left" Margin="341,31,0,0" VerticalAlignment="Top" Height="26" Cursor="Help"/>
+                    <Label x:Name="label2_Copy13" Content="кликнуть 2 раза по полю" HorizontalAlignment="Left" Margin="341,54,0,0" VerticalAlignment="Top" Height="26" Cursor="Help"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Fire" BorderBrush="#CCFF6C6C">
+                <Grid Background="White">
+                    <GroupBox x:Name="groupBox" Header="Fire Other" HorizontalAlignment="Left" Margin="-9,9,0,0" VerticalAlignment="Top" Background="#FE2E2E2E" Height="269" Width="274" BorderBrush="{x:Null}">
+                        <Grid>
+                            <TextBox x:Name="T_FireDelayCount" Text="{Binding FireDelayCount, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireDelay0" Text="{Binding FireDelay0, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireDelay1" Text="{Binding FireDelay1, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireDelay2" Text="{Binding FireDelay2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireDelay3" Text="{Binding FireDelay3, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireObj" Text="{Binding FireObject, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireSpeed" Text="{Binding FireSpeed, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="127,196,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label1_Copy6" Content="FireDelayCount -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy7" Content="Fire Delay0 -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy8" Content="Fire Delay1 -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy9" Content="Fire Delay2 -" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy10" Content="Fire Delay3 -" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy17" Content="Fire Obj -" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label1_Copy18" Content="FireSpeed -" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox1" Header="Fire Effect" Margin="263,9,-16,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="269">
+                        <Grid>
+                            <TextBox x:Name="T_FireEffect0" Text="{Binding FireEffect0, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="88,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireEffect1" Text="{Binding FireEffect1, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="88,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <TextBox x:Name="T_FireEffect2" Text="{Binding FireEffect2, UpdateSourceTrigger=Explicit}" HorizontalAlignment="Left" Height="23" Margin="88,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="136" Foreground="Black" CaretBrush="Black" BorderBrush="#FFABBAFF" Controls:ControlsHelper.FocusBorderBrush="Red" Controls:ControlsHelper.MouseOverBorderBrush="#FF7400FF" TextChanged="ValueChanget" KeyDown="KeyChange"/>
+                            <Label x:Name="label2_Copy8" Content="FireEffect0 -" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label2_Copy9" Content="FireEffect1 -" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label2_Copy10" Content="FireEffect2 -" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Store">
+                <Grid>
+                    <Rectangle Fill="#FF2E2E2E" HorizontalAlignment="Left" Height="36" Margin="-8,0,0,0" Stroke="#FF2E2E2E" VerticalAlignment="Top" Width="501"/>
+                    <Button x:Name="B_SaveShop" Content="Save ShopAll" HorizontalAlignment="Left" Margin="10,0,0,444" VerticalAlignment="Bottom" Width="104" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_SaveShop_Click"/>
+                    <Button x:Name="B_SaveShop_Copy" Content="Set in DB" HorizontalAlignment="Left" Margin="146,0,0,444" VerticalAlignment="Bottom" Width="104" Background="#FF2E2E2E" BorderBrush="Red" Foreground="White" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20"/>
+                    <CheckBox x:Name="C_CheckActiveShop" Content="NPC Shop" HorizontalAlignment="Left" Margin="286,10,0,0" VerticalAlignment="Top" BorderBrush="Red" Foreground="White" Background="White" Click="C_CheckActiveShop_Click"/>
+                    <ListView x:Name="L_Shop" HorizontalAlignment="Left" Height="423" Margin="10,41,0,0" VerticalAlignment="Top" Width="311">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="45">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate DataType="{x:Type BitmapImage}">
+                                            <Image Width="32" Height="32" Source="{Binding Converter={StaticResource IconConv}}"></Image>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="ID" Width="60" DisplayMemberBinding="{Binding ItemID}"/>
+                                <GridViewColumn Header="Name" Width="190" DisplayMemberBinding="{Binding Name}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <GroupBox x:Name="groupBox5" Header="Actions" HorizontalAlignment="Left" Margin="326,35,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="#FF2E2E2E" Width="167" Height="186">
+                        <Grid>
+                            <Button x:Name="B_ShopAdd" Content="Add Item" HorizontalAlignment="Left" Margin="26,0,0,112" VerticalAlignment="Bottom" Width="104" Background="White" BorderBrush="Red" Foreground="Black" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_ShopAdd_Click"/>
+                            <Button x:Name="B_ShopRemove" Content="Remove Item" HorizontalAlignment="Left" Margin="26,0,0,82" VerticalAlignment="Bottom" Width="104" Background="White" BorderBrush="Red" Foreground="Black" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_ShopRemove_Click"/>
+                            <Button x:Name="B_ShopUp" Content="Up Item" HorizontalAlignment="Left" Margin="26,0,0,52" VerticalAlignment="Bottom" Width="104" Background="White" BorderBrush="Red" Foreground="Black" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_ShopUp_Click"/>
+                            <Button x:Name="B_ShopDown" Content="Down Item" HorizontalAlignment="Left" Margin="26,0,0,22" VerticalAlignment="Bottom" Width="104" Background="White" BorderBrush="Red" Foreground="Black" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20" Click="B_ShopDown_Click"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox5_Copy" Header="DataBase" HorizontalAlignment="Left" Margin="326,221,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="#FF2E2E2E" Width="167" Height="243">
+                        <Grid>
+                            <Button x:Name="B_GetFromDB" Content="Get From DB" HorizontalAlignment="Left" Margin="10,169,0,10" Width="135" Background="White" BorderBrush="Red" Foreground="Black" BorderThickness="0,2" FontWeight="Bold" FontSize="9.333" Height="20"/>
+                            <TextBox x:Name="T_ShopZone" HorizontalAlignment="Left" Height="24" Margin="59,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86"/>
+                            <TextBox x:Name="T_ShopPosX" HorizontalAlignment="Left" Height="24" Margin="59,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86"/>
+                            <TextBox x:Name="T_ShopPosZ" HorizontalAlignment="Left" Height="24" Margin="59,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86"/>
+                            <TextBox x:Name="T_ShopPosH" HorizontalAlignment="Left" Height="24" Margin="59,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86"/>
+                            <TextBox x:Name="T_ShopPosR" HorizontalAlignment="Left" Height="24" Margin="59,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="86"/>
+                            <Label x:Name="label" Content="Zone №" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy" Content="Pos X" HorizontalAlignment="Left" Margin="0,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy1" Content="Pos Z" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy2" Content="Pos H" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label_Copy3" Content="Pos R" HorizontalAlignment="Left" Margin="0,134,0,0" VerticalAlignment="Top"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="DataBase">
+                <Grid>
+                    <GroupBox x:Name="groupBox6" Header="Attack" HorizontalAlignment="Left" Margin="-9,0,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Width="194" Height="192">
+                        <Grid >
+                            <Label x:Name="label5" Content="Level :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label5_Copy" Content="Attack :" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label5_Copy1" Content="Magic(att) :" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" ToolTip="Магическая атака"/>
+                            <Label x:Name="label5_Copy2" Content="Accuracy :" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" ToolTip="Меткость"/>
+                            <TextBox x:Name="T_SQL_AttackLevel" HorizontalAlignment="Left" Height="24" Margin="85,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_Attack" HorizontalAlignment="Left" Height="24" Margin="85,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_AttackMagicAtt" HorizontalAlignment="Left" Height="24" Margin="85,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_AttackAccuracy" HorizontalAlignment="Left" Height="24" Margin="85,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox6_Copy" Header="Deffence" HorizontalAlignment="Left" Margin="180,0,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Width="222" Height="237">
+                        <Grid>
+                            <Label x:Name="label6" Content="Level :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label5_Copy3" Content="Deffence :" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label5_Copy4" Content="Resist :" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" ToolTip="Сопротивление"/>
+                            <Label x:Name="label5_Copy5" Content="Dodge :" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" ToolTip="\"/>
+                            <TextBox x:Name="T_SQL_DeffenceLevel" HorizontalAlignment="Left" Height="24" Margin="85,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_DeffenceResist" HorizontalAlignment="Left" Height="24" Margin="85,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_Deffence" HorizontalAlignment="Left" Height="24" Margin="85,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_DeffenceDodge" HorizontalAlignment="Left" Height="24" Margin="85,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_DeffenceMagRes" HorizontalAlignment="Left" Height="24" Margin="85,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <TextBox x:Name="T_SQL_DeffenceClassAtrib" HorizontalAlignment="Left" Height="24" Margin="85,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="87"/>
+                            <Label x:Name="label5_Copy6" Content="Magic Res :" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" ToolTip="Магическое сопротивление"/>
+                            <Label x:Name="label5_Copy7" Content="Class atrib :" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" ToolTip="Класовый атрибут"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox6_Copy1" Header="Stat" HorizontalAlignment="Left" Margin="397,0,0,0" VerticalAlignment="Top" Background="#FF2E2E2E" BorderBrush="{x:Null}" Width="146" Height="169">
+                        <Grid>
+                            <Label x:Name="label7" Content="Str :" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" ToolTip="Сила"/>
+                            <Label x:Name="label5_Copy8" Content="Dex :" HorizontalAlignment="Left" Margin="0,41,0,0" VerticalAlignment="Top" ToolTip="Ловкость"/>
+                            <Label x:Name="label5_Copy9" Content="Int :" HorizontalAlignment="Left" Margin="0,72,0,0" VerticalAlignment="Top" ToolTip="Интелект"/>
+                            <Label x:Name="label5_Copy10" Content="Con :" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top" ToolTip="Телосложение"/>
+                            <TextBox x:Name="T_SQL_str" HorizontalAlignment="Left" Height="24" Margin="42,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="92"/>
+                            <TextBox x:Name="T_SQL_dex" HorizontalAlignment="Left" Height="24" Margin="42,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="92"/>
+                            <TextBox x:Name="T_SQL_int" HorizontalAlignment="Left" Height="24" Margin="42,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="92"/>
+                            <TextBox x:Name="T_SQL_con" HorizontalAlignment="Left" Height="24" Margin="42,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="92"/>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox7" Header="Recover hp/mp   / sec" HorizontalAlignment="Left" Margin="399,242,0,0" VerticalAlignment="Top" Width="141" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="116">
+                        <Grid>
+                            <Label x:Name="label8" Content="HP" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="Red"/>
+                            <Label x:Name="label8_Copy" Content="MP" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Foreground="#FF0017FF"/>
+                            <TextBox x:Name="T_SQL_RecHP" HorizontalAlignment="Left" Height="23" Margin="40,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="89"/>
+                            <TextBox x:Name="T_SQL_RecMP" HorizontalAlignment="Left" Height="23" Margin="40,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="89"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox7_Copy" Header="AI" HorizontalAlignment="Left" Margin="0,242,0,0" VerticalAlignment="Top" Width="194" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="232">
+                        <Grid>
+                            <Label x:Name="label9" Content="AI Type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <Label x:Name="label8_Copy1" Content="AI Flag" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <TextBox x:Name="T_SQL_AI_Flag" HorizontalAlignment="Left" Height="23" Margin="84,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93"/>
+                            <Label x:Name="label8_Copy2" Content="AI Lead flag" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <Label x:Name="label8_Copy3" Content="AI Sum HP" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <Label x:Name="label8_Copy4" Content="AI Lead IDX" HorizontalAlignment="Left" Margin="10,134,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <Label x:Name="label8_Copy5" Content="AI Lead Count" HorizontalAlignment="Left" Margin="10,165,0,-8" VerticalAlignment="Top" Foreground="Black"/>
+                            <TextBox x:Name="T_SQL_AI_LFlag" HorizontalAlignment="Left" Height="23" Margin="84,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93"/>
+                            <TextBox x:Name="T_SQL_AI_SumHP" HorizontalAlignment="Left" Height="23" Margin="84,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93"/>
+                            <TextBox x:Name="T_SQL_AI_LIDX" HorizontalAlignment="Left" Height="23" Margin="84,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93"/>
+                            <TextBox x:Name="T_SQL_AI_LCount" HorizontalAlignment="Left" Height="23" Margin="100,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="77"/>
+                            <ComboBox x:Name="C_AI_Type" HorizontalAlignment="Left" Margin="84,10,0,0" VerticalAlignment="Top" Width="93">
+                                <ComboBoxItem Content="0 - AI Normal"/>
+                                <ComboBoxItem Content="1 - AI Tanker"/>
+                                <ComboBoxItem Content="2 - AI Damage Dealer"/>
+                                <ComboBoxItem Content="3 - AI Healer"/>
+                            </ComboBox>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox8" Header="Skill NPC" HorizontalAlignment="Left" Margin="189,242,0,0" VerticalAlignment="Top" Width="213" Background="#FF2E2E2E" BorderBrush="{x:Null}" Height="206">
+                        <Grid>
+                            <Label x:Name="label10" Content="ID1" HorizontalAlignment="Left" Margin="-5,28,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label10_Copy" Content="ID2" HorizontalAlignment="Left" Margin="-5,59,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label10_Copy1" Content="ID3" HorizontalAlignment="Left" Margin="-5,90,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label10_Copy2" Content="ID4" HorizontalAlignment="Left" Margin="-5,121,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="T_SQL_SkillID1" HorizontalAlignment="Left" Height="23" Margin="28,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59"/>
+                            <TextBox x:Name="T_SQL_SkillLvl1" HorizontalAlignment="Left" Height="23" Margin="92,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
+                            <TextBox x:Name="T_SQL_SkillChance1" HorizontalAlignment="Left" Height="23" Margin="134,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62"/>
+                            <Label x:Name="label10_Copy3" Content="Lvl" HorizontalAlignment="Left" Margin="100,0,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label10_Copy4" Content="Chance" HorizontalAlignment="Left" Margin="134,0,0,0" VerticalAlignment="Top"/>
+                            <Label x:Name="label10_Copy5" Content="SkillID" HorizontalAlignment="Left" Margin="36,0,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="T_SQL_SkillID2" HorizontalAlignment="Left" Height="23" Margin="28,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59"/>
+                            <TextBox x:Name="T_SQL_SkillLvl2" HorizontalAlignment="Left" Height="23" Margin="92,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
+                            <TextBox x:Name="T_SQL_SkillChance2" HorizontalAlignment="Left" Height="23" Margin="134,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62"/>
+                            <TextBox x:Name="T_SQL_SkillID3" HorizontalAlignment="Left" Height="23" Margin="28,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59"/>
+                            <TextBox x:Name="T_SQL_SkillLvl3" HorizontalAlignment="Left" Height="23" Margin="92,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
+                            <TextBox x:Name="T_SQL_SkillChance3" HorizontalAlignment="Left" Height="23" Margin="134,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62"/>
+                            <TextBox x:Name="T_SQL_SkillID4" HorizontalAlignment="Left" Height="23" Margin="28,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="59"/>
+                            <TextBox x:Name="T_SQL_SkillLvl4" HorizontalAlignment="Left" Height="23" Margin="92,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="37"/>
+                            <TextBox x:Name="T_SQL_SkillChance4" HorizontalAlignment="Left" Height="23" Margin="134,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="62"/>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox x:Name="groupBox7_Copy1" Header="Move/Radius" HorizontalAlignment="Left" Margin="399,364,0,-11" VerticalAlignment="Top" Width="141" Background="#FF2E2E2E" BorderBrush="#FF2E2E2E" Height="121">
+                        <Grid>
+                            <Label x:Name="label113" Content="M Area" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <Label x:Name="label8_Copy6" Content="Att Area" HorizontalAlignment="Left" Margin="0,41,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                            <TextBox x:Name="T_SQL_MArea" HorizontalAlignment="Left" Height="23" Margin="53,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+                            <TextBox x:Name="T_SQL_AArea" HorizontalAlignment="Left" Height="23" Margin="53,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="76"/>
+                        </Grid>
+                    </GroupBox>
+                    <Button x:Name="B_SQL_Get" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Left" Margin="-58,191,0,0" VerticalAlignment="Top" Width="44" Height="42" BorderBrush="Black" Foreground="White" Background="White" ToolTip="Get DB" Click="B_SQL_Get_Click">
+                        <Rectangle Width="20"
+                    		Height="20">
+                            <Rectangle.Fill>
+                                <VisualBrush
+                    				Visual="{StaticResource appbar_skydrive_download}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button x:Name="B_SQL_SET" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Left" Margin="-58,238,0,0" VerticalAlignment="Top" Width="44" Height="42" BorderBrush="Black" Background="White" ToolTip="Set DB" Click="B_SQL_SET_Click">
+                        <Rectangle Width="20"
+                    		Height="20">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_skydrive_upload}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                    <Button x:Name="B_SQL_Inform" Style="{DynamicResource MetroCircleButtonStyle}" HorizontalAlignment="Left" Margin="-58,285,0,0" VerticalAlignment="Top" Width="44" Height="42" BorderBrush="Black" Background="White" ToolTip="Дополнительные настройки" Click="B_SQL_Inform_Click">
+                        <Rectangle Width="16"
+                    		Height="16">
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill"
+                    				Visual="{StaticResource appbar_table}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Rectangle Fill="#FF2E2E2E" HorizontalAlignment="Left" Height="156" Margin="307,88,0,0" Stroke="#FF2E2E2E" VerticalAlignment="Top" Width="55"/>
+        <Rectangle Fill="#FF2E2E2E" HorizontalAlignment="Left" Height="141" Margin="307,395,0,0" Stroke="#FF2E2E2E" VerticalAlignment="Top" Width="55"/>
+        <Button x:Name="B_Add" HorizontalAlignment="Left" Margin="316,413,0,0" VerticalAlignment="Top" Width="37" FontSize="14.667" Height="33" Background="White" BorderBrush="{x:Null}" ToolTip="Добавить Npc" Click="MI_Add_Click" Foreground="{x:Null}">
+            <Rectangle Width="20"
+        		Height="20">
+                <Rectangle.Fill>
+                    <VisualBrush Stretch="Fill"
+        				Visual="{StaticResource appbar_list_add_below}" />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+        <Button x:Name="B_Remove" HorizontalAlignment="Left" Margin="316,451,0,0" VerticalAlignment="Top" Width="37" FontSize="14.667" Height="33" Background="White" BorderBrush="{x:Null}" Foreground="White" ToolTip="Удалить Npc" Click="MI_Remove_Click">
+            <Rectangle Width="20"
+              Height="20">
+                <Rectangle.Fill>
+                    <VisualBrush
+                    Visual="{StaticResource appbar_list_delete}" />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+        <Button x:Name="B_Copy" HorizontalAlignment="Left" Margin="316,489,0,0" VerticalAlignment="Top" Width="37" FontSize="14.667" Height="33" Background="White" BorderBrush="{x:Null}" Foreground="White" ToolTip="Копировать Npc" Click="B_Copy_Click">
+            <Rectangle Width="20"
+              Height="20">
+                <Rectangle.Fill>
+                    <VisualBrush
+                    Visual="{StaticResource appbar_section_expand_all}" />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Button>
+        <!--FLYOUT-->
+        <Controls:FlyoutsControl Panel.ZIndex="1" Grid.ColumnSpan="2">
+            Настройки для MySQL
+            <Controls:Flyout Header="Settings" Position="Right" Width="230" IsOpen="False" Name="FLYOUT_MySQLConf">
+                <Grid>
+                    <TextBox x:Name="T_IP" HorizontalAlignment="Left" Height="23" Margin="95,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="T_Login" HorizontalAlignment="Left" Height="23" Margin="95,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="T_Pass" HorizontalAlignment="Left" Height="23" Margin="95,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <TextBox x:Name="T_Data" HorizontalAlignment="Left" Height="23" Margin="95,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="B_TestCon" Content="Connect"  HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="205" Background="White" BorderBrush="Red" Foreground="#FFCB5858" BorderThickness="0,1" Click="B_TestCon_Click"/>
+                    <Button x:Name="B_Save_Conf" Content="Save"  HorizontalAlignment="Left" Margin="10,168,0,0" VerticalAlignment="Top" Width="205" Background="White" BorderBrush="Red" Foreground="#FFCB5858" BorderThickness="0,1" Click="B_Save_Conf_Click"/>
+                    <Label x:Name="label11" Content="IP :" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy11" Content="Login :" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy111" Content="Pass :" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="label_Copy21" Content="Data :" HorizontalAlignment="Left" Margin="10,103,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
+            </Controls:Flyout>
+            Настройки для Открытия
+            <Controls:Flyout Header="Open" Position="Top" Height="65" Width="550" IsOpen="False" Name="FLYOUT_OpenFile">
+                <Grid>
+                    <Button x:Name="B_OpenAuto" Content="Открыть [AUTO]" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top" Width="112" Background="#FF2B2B2B" BorderBrush="Red" Foreground="White" BorderThickness="0,2" Click="B_OpenAuto_Click"/>
+                    <Button x:Name="B_OpenREG" Content="Открыть [REG]" HorizontalAlignment="Left" Margin="145,18,0,0" VerticalAlignment="Top" Width="112" Background="#FF2B2B2B" BorderBrush="Red" Foreground="White" BorderThickness="0,2" Click="B_OpenREG_Click"/>
+                    <Button x:Name="B_OpenNOT" Content="Открыть [NOT-REG]" HorizontalAlignment="Left" Margin="276,18,0,0" VerticalAlignment="Top" Width="112" Background="#FF2B2B2B" BorderBrush="Red" Foreground="White" BorderThickness="0,2" IsEnabled="False"/>
+                </Grid>
+            </Controls:Flyout>
+            Настройки для Сохранения
+            <Controls:Flyout Header="Save" Position="Top" Height="60" Width="550" IsOpen="False" Name="FLYOUT_SaveFile">
+                <Grid>
+                    <Button x:Name="B_SaveAuto" Content="Сохранить [AUTO]" HorizontalAlignment="Left" Margin="120,19,0,0" VerticalAlignment="Top" Width="112" Background="#FF2B2B2B" BorderBrush="Red" Foreground="White" BorderThickness="0,2" Click="B_SaveAuto_Click"/>
+                    <Button x:Name="B_SaveREG" Content="Вручную" HorizontalAlignment="Left" Margin="255,19,0,0" VerticalAlignment="Top" Width="112" Background="#FF2B2B2B" BorderBrush="Red" Foreground="White" BorderThickness="0,2" IsEnabled="False"/>
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Grid>
+
+</Controls:MetroWindow>
